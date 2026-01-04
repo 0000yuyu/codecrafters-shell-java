@@ -65,7 +65,7 @@ class CommandManager {
             case "type":
                 String fullpath;
                 if (command.isBuiltin(command.args))
-                    System.out.println(command.name + " is a shell builtin");
+                    System.out.println(command.args + " is a shell builtin");
                 else if ((fullpath = getExecutableFullPath(command.args)) != null) {
                     System.out.println(command.args + " is " + fullpath);
                 }
