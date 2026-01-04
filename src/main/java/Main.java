@@ -1,4 +1,6 @@
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,9 +28,7 @@ class CommandManager {
         sc = new Scanner(System.in);
         while(true)
         {
-            inputCommand();
-            if (command.name.equals("exit"))
-                return ;
+            if(!inputCommand()) return;
             processCommand();
         }
     }
@@ -40,11 +40,12 @@ class CommandManager {
     }
     private void processExcuteCommand() {
         String fullPath = getExecutableFullPath(command.name);
-        String[] args = command.args.split(" ");
-
+        List<String> fullArgs = new ArrayList<>();
+        fullArgs.add(fullPath); // 찾은 전체 경로를 첫 번째로 넣음
+        fullArgs.addAll(Arrays.asList(command.args.split(" ")));
         if (fullPath != null){
             try {
-                ProcessBuilder pb = new ProcessBuilder(args);
+                ProcessBuilder pb = new ProcessBuilder(fullArgs);
                 pb.inheritIO();
                 Process process = pb.start();
                 process.waitFor();
@@ -52,7 +53,7 @@ class CommandManager {
                 System.err.println(e.getMessage());
             }
         } else {
-            System.out.println(command + ": command not found");
+            System.out.println(command.name + ": command not found");
         }
     }
     public void processBuiltinCommand()
@@ -87,11 +88,14 @@ class CommandManager {
         }
         return null;
     }
-    public void inputCommand()
+    public boolean inputCommand()
     {
         System.out.print("$ ");
         String input = sc.nextLine().trim();
+        if (input.startsWith("exit"))
+            return false;
         this.command = new Command(input);
+        return true;
     }
 }
 public class Main {
