@@ -5,10 +5,16 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.print("$ ");
-            String command = sc.next();
+            String command = sc.nextLine().trim();
             if (command.equals("exit"))
                 break;
-            System.out.println(command + ": command not found");
+            if (command.startsWith("echo"))
+            {
+                String sentence = command.substring(5);
+                System.out.println(sentence);
+            }
+            else 
+                System.out.println(command + ": command not found");
         }
     }
 }
