@@ -41,7 +41,7 @@ class CommandManager {
     private void processExcuteCommand() {
         String fullPath = getExecutableFullPath(command.name);
         List<String> fullArgs = new ArrayList<>();
-        fullArgs.add(fullPath); // 찾은 전체 경로를 첫 번째로 넣음
+        fullArgs.add(command.name); // 찾은 전체 경로를 첫 번째로 넣음
         fullArgs.addAll(Arrays.asList(command.args.split(" ")));
         if (fullPath != null){
             try {
