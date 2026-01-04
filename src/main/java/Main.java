@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -5,16 +6,27 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.print("$ ");
-            String command = sc.nextLine().trim();
-            if (command.equals("exit"))
-                break;
-            if (command.startsWith("echo"))
-            {
-                String sentence = command.substring(5);
-                System.out.println(sentence);
+            String input = sc.nextLine().trim();
+            String[] commands = input.split("\\s+", 2);
+            switch (commands[0]) {
+                case "exit":
+                    return;
+                case "echo":
+                    System.out.println(commands[1]);
+                    break;
+                case "type":
+                    List<String> builtins = List.of("echo", "exit", "type");
+                    if (commands.length > 1 && builtins.contains(commands[1])){
+                        System.out.println(commands[1] + " is a shell builtin");
+                    }
+                    else
+                        System.out.println(commands[1]+": not found");
+                    break;
+                default:
+                    if (commands.length > 1)
+                        commands[0] = commands[1];
+                    System.out.println(commands[0]+ ": command not found");
             }
-            else 
-                System.out.println(command + ": command not found");
         }
     }
 }
