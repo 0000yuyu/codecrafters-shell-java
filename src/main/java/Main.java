@@ -12,7 +12,8 @@ class Command {
     {
         String[] parts = input.split("\\s+", 2);
         this.name = parts[0];
-        this.args = parts[1];
+        if (parts.length > 1)
+            this.args = parts[1];
     }
     public boolean isBuiltin(String commandString)
     {
@@ -40,10 +41,10 @@ class CommandManager {
     }
     private void processExcuteCommand() {
         String fullPath = getExecutableFullPath(command.name);
-        List<String> fullArgs = new ArrayList<>();
-        fullArgs.add(command.name); // 찾은 전체 경로를 첫 번째로 넣음
-        fullArgs.addAll(Arrays.asList(command.args.split(" ")));
         if (fullPath != null){
+            List<String> fullArgs = new ArrayList<>();
+            fullArgs.add(command.name); // 찾은 전체 경로를 첫 번째로 넣음
+            fullArgs.addAll(Arrays.asList(command.args.split(" ")));
             try {
                 ProcessBuilder pb = new ProcessBuilder(fullArgs);
                 pb.inheritIO();
